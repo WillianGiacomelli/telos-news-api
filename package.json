@@ -6,6 +6,7 @@
   "author": "<willian2406@live.com>",
   "license": "MIT",
   "dependencies": {
+    "commitizen": "^4.3.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2"
   },
