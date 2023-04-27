@@ -42,7 +42,7 @@ const create = async (request, response) => {
       name,
       biography,
       email,
-      password,
+      password: hashedPassword,
       createdAt: creationDate,
       modifiedAt: null,
     };
@@ -122,4 +122,5 @@ module.exports = {
   create,
   update,
   remove,
+  authorDatabase: authors,
 };
