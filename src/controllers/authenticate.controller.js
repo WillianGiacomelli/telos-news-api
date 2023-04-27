@@ -31,9 +31,11 @@ const login = async (request, response) => {
       expiresIn: "1h",
     });
 
-    delete author.password;
+    const authorLoged = { ...user };
 
-    return response.json({ ...author, token });
+    delete authorLoged.password;
+
+    return response.json({ ...authorLoged, token });
   }
 };
 

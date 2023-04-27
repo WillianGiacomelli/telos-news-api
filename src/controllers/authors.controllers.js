@@ -68,7 +68,7 @@ const getById = (request, response) => {
   return response.json(author);
 };
 
-const update = (request, response) => {
+const update = async (request, response) => {
   const { id } = request.params;
 
   const { name, biography, email, password, createdAt } = request.body;
@@ -83,6 +83,8 @@ const update = (request, response) => {
   } else {
     const updatedTime = new Date();
 
+    const { createdAt } = authors[authorIndex];
+
     const authorUpdated = {
       id: id,
       name,
@@ -92,6 +94,12 @@ const update = (request, response) => {
       createdAt,
       modifiedAt: updatedTime,
     };
+
+    if (password) {
+      authorUpdated.password = await generateHash(password);
+    } else {
+      authorUpdated.password = authors[authorIndex].password;
+    }
 
     authorIndex[authorIndex] = authorUpdated;
 

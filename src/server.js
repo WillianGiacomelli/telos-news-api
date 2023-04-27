@@ -1,6 +1,7 @@
 const express = require("express");
 
 const authorRoutes = require("./routes/authors.routes");
+const newsRoutes = require("./routes/news.routes");
 const authenticateRoutes = require("./routes/authenticate.routes");
 
 const app = express();
@@ -11,6 +12,7 @@ app.use(express.json());
 
 app.use(authorRoutes);
 app.use(authenticateRoutes);
+app.use(newsRoutes);
 
 app.listen(PORT, () => {
   //Define a porta que será ouvida ou no caso, terá a aplicação executada
