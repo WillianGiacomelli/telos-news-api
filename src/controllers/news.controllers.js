@@ -3,6 +3,26 @@ const uuid = require("uuid");
 const informations = [];
 
 const list = (request, response) => {
+  const { author_id, publish_date } = request.query;
+
+  //  console.log(request.query);
+
+  if (author_id && publish_date) {
+    informationsFilter = informations.filter(
+      (n) => n.author_id === author_id && n.publishDate === publish_date
+    );
+
+    return response.json(informationsFilter);
+  } else if (author_id) {
+    informationsFilter = informations.filter((n) => n.author_id === author_id);
+
+    return response.json(informationsFilter);
+  } else if (publish_date) {
+    informationsFilter = informations.filter((n) => n.author_id === author_id);
+
+    return response.json(informationsFilter);
+  }
+
   return response.json(informations);
 };
 
@@ -22,7 +42,7 @@ const getById = (request, response) => {
 };
 
 const create = (request, response) => {
-  const { title, brief, content, image, publish_Date } = request.body;
+  const { title, brief, content, image, publish_date } = request.body;
 
   const id = uuid.v4();
 
@@ -35,7 +55,7 @@ const create = (request, response) => {
     content,
     author_id: request.author.id,
     image,
-    publishDate: publish_Date,
+    publishDate: publish_date,
     createdAt: creationDate,
     modifiedAt: null,
   };
@@ -48,7 +68,7 @@ const create = (request, response) => {
 const update = (request, response) => {
   const { id } = request.params;
 
-  const { title, description, year, genres, image, video } = request.body;
+  const { title, brief, content, image, publish_Date } = request.body;
 
   const informationIndex = informations.findIndex((i) => i.id === id);
 
@@ -57,44 +77,42 @@ const update = (request, response) => {
       error: "@informations/update",
       message: `information not found ${id}`,
     });
-  } else {
-    modifyingDate = new Date();
-
-    const { createdAt } = informations[informationIndex];
-
-    const informationUpdated = {
-      id,
-      title,
-      brief,
-      content,
-      author_id,
-      image,
-      publishDate,
-      createdAt,
-      modifiedAt: modifyingDate,
-    };
-
-    informations[informationIndex] = informationUpdated;
-
-    return response.status(201).json(informationUpdated);
   }
+
+  modifyingDate = new Date();
+
+  const { createdAt } = informations[informationIndex];
+
+  const informationUpdated = {
+    id,
+    title,
+    brief,
+    content,
+    author_id,
+    image,
+    publishDate,
+    createdAt,
+    modifiedAt: modifyingDate,
+  };
+  informations[informationIndex] = informationUpdated;
+
+  return response.status(201).json(informationUpdated);
 };
 
 const remove = (request, response) => {
   const { id } = request.params;
 
-  const informationIndex = informations.findIndex((ii) => i.id === id);
+  const informationIndex = informations.findIndex((i) => i.id === id);
 
   if (informationIndex < 0) {
     return response.status(400).json({
       error: "@informations/remove",
       message: `information not found ${id}`,
     });
-  } else {
-    informations.splice(informationIndex, 1);
-
-    return response.send();
   }
+  informations.splice(informationIndex, 1);
+
+  return response.send();
 };
 
 module.exports = {
