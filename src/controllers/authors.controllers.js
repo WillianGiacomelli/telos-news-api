@@ -30,27 +30,26 @@ const create = async (request, response) => {
       error: "@authors/create",
       message: `author already exists ${email}`,
     });
-  } else {
-    const hashedPassword = await generateHash(password);
-
-    const id = uuid.v4();
-
-    const creationDate = new Date();
-
-    const author = {
-      id: id,
-      name,
-      biography,
-      email,
-      password: hashedPassword,
-      createdAt: creationDate,
-      modifiedAt: null,
-    };
-
-    authors.push(author);
-
-    return response.status(201).json(author);
   }
+  const hashedPassword = await generateHash(password);
+
+  const id = uuid.v4();
+
+  const creationDate = new Date();
+
+  const author = {
+    id: id,
+    name,
+    biography,
+    email,
+    password: hashedPassword,
+    createdAt: creationDate,
+    modifiedAt: null,
+  };
+
+  authors.push(author);
+
+  return response.status(201).json(author);
 };
 
 const getById = (request, response) => {
@@ -97,9 +96,8 @@ const update = async (request, response) => {
 
     if (password) {
       authorUpdated.password = await generateHash(password);
-    } else {
-      authorUpdated.password = authors[authorIndex].password;
     }
+    authorUpdated.password = authors[authorIndex].password;
 
     authorIndex[authorIndex] = authorUpdated;
 
